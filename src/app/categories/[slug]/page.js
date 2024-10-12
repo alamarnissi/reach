@@ -1,6 +1,7 @@
 import { allBlogs } from "@/.contentlayer/generated";
 import BlogLayoutThree from "@/src/components/Blog/BlogLayoutThree";
 import Categories from "@/src/components/Blog/Categories";
+import { sortBlogs } from "@/src/utils";
 import GithubSlugger, { slug } from "github-slugger";
 
 const slugger = new GithubSlugger();
@@ -33,9 +34,11 @@ export async function generateMetadata({ params }) {
 
 
 const CategoryPage = ({ params }) => {
+  // return filtred articles by date
+  const sortedBlogs = sortBlogs(allBlogs);
 // Separating logic to create list of categories from all blogs
 const allCategories = ["all"]; // Initialize with 'all' category
-allBlogs.forEach(blog => {
+sortedBlogs.forEach(blog => {
   blog.tags.forEach(tag => {
     const slugified = slug(tag);
     if (!allCategories.includes(slugified)) {
@@ -48,7 +51,7 @@ allBlogs.forEach(blog => {
 allCategories.sort();
 
 // Step 2: Filter blogs based on the current category (params.slug)
-const blogs = allBlogs.filter(blog => {
+const blogs = sortedBlogs.filter(blog => {
   if (params.slug === "all") {
     return true; // Include all blogs if 'all' category is selected
   }

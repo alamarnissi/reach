@@ -11,7 +11,6 @@ export default function Home() {
       <FeaturedPosts blogs={allBlogs} />
       <RecentPosts blogs={allBlogs} />
 
-
     </main>
   )
 }
